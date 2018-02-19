@@ -1,4 +1,4 @@
-node('x86_64') {
+node("x86_64") {
     deleteDir()
 
 
