@@ -2,7 +2,7 @@ node("x86_64") {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
 
-    sh "bash -c 'echo ${TOKEN} | cat' "
+    sh "echo ${TOKEN} >  /home/jenkins/123"
     
     echo "Сборщик: ${env.NODE_NAME}"
     echo "Директория: ${env.WORKSPACE}"
