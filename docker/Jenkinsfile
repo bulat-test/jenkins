@@ -11,7 +11,7 @@ def function(version) {
  
     checkout scm
 
-    sh " VERSION=$version ./docker/build.sh "
+    sh "./docker/build.sh "
     sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
     sh "docker images"
     
@@ -33,13 +33,13 @@ def function(version) {
 parallel (
     "stream x86_64" : {
         node('x86_64') {
-            function(VERSIONN)
+            function(VERSION)
         }
     },
 
     "stream armv7l" : { 
         node('arm') {
-            function(VERSIONN)
+            function(VERSION)
         }
     }
 )
