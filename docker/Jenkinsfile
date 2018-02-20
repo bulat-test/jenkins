@@ -22,20 +22,21 @@ def function() {
 
     sh " VERSION=666 ./docker/build.sh  "
     sh "docker images"
+    }
 }
 
 parallel (
     "stream x86_64" : { 
 node('x86_64') {
     function()
-}
+
 } 
                    },
     
     "stream armv7l" : { 
 node('arm') {
    function()
-}
+
 }
                    }
           )
