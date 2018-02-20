@@ -4,7 +4,28 @@
 // [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'ver']
 //])
 
-node('x86_64||arm') {
+node('x86_64') {
+    deleteDir()
+    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
+    sh "pwd"
+//    echo ("Env: "+userInput)
+//    echo userInput
+//    sh "echo $userInput"
+
+    sh "echo \"docker `uname -m`:latest\""
+    echo "Сборщик: ${env.NODE_NAME}"
+    echo "Директория: ${env.WORKSPACE}"
+    echo "Версия Docker"
+    sh "docker -v"
+
+    checkout scm
+
+    sh "docker build -t 'global_doc:latest' ./docker "
+    sh "docker images"
+    sh "echo 'docker `uname -m`:latest'"
+}
+}
+node('arm') {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
     sh "pwd"
