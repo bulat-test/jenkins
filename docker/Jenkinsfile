@@ -2,7 +2,7 @@
 def function() {
         def host_arch = sh (script: 'uname -m', returnStdout: true).trim()
         def docker_hub_project = ("dgls/footcourtproxy-" + host_arch)
-    stage ('init'+host_arch){
+    stage ('init-'+host_arch){
         deleteDir()  
         echo "Сборщик: ${env.NODE_NAME}"
         echo "Директория: ${env.WORKSPACE}"
@@ -12,11 +12,11 @@ def function() {
 
         checkout scm
     }
-    stage ('build'+host_arch){
+    stage ('build-'+host_arch){
         sh "./docker/build.sh"
     }
     
-    stage ('push'+host_arch){
+    stage ('push-'+host_arch){
         sh "docker tag $docker_hub_project:$VERSION $docker_hub_project:latest"
         sh "docker images"
 
