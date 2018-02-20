@@ -1,11 +1,8 @@
 
 def function(version) {
-    deleteDir()
-    
-    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-
     def docker_hub_project = 'dgls/footcourtproxy-'
-
+    
+    deleteDir()  
     echo "Сборщик: ${env.NODE_NAME}"
     sh "hostname"
     echo "Директория: ${env.WORKSPACE}"
@@ -17,10 +14,15 @@ def function(version) {
     sh " VERSION=$version ./docker/build.sh "
     sh "docker tag $docker_hub_project`uname -m`:$version $docker_hub_project`uname -m`:latest"
     sh "docker images"
-    // docker login
-    // docker push
-    sh "docker rmi --no-prune \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
+    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
+        // docker login
     }
+    // docker push
+    
+    try {
+        sh "docker rmi  \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
+    }
+    
 }
 
 stage ('promotion'){
