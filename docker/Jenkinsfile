@@ -1,7 +1,7 @@
 
 def function() {
-    
-        def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
+        def host_arch = sh (script: 'uname -m', returnStdout: true).trim()
+        def docker_hub_project = ("dgls/footcourtproxy-" + host_arch)
     stage ('init'){
         deleteDir()  
         echo "Сборщик: ${env.NODE_NAME}"
