@@ -7,7 +7,7 @@ def function(version) {
     echo "Директория: ${env.WORKSPACE}"
     echo "Версия Docker"
     sh "docker -v"
-    
+    echo docker_hub_project
     checkout scm
 
     sh " VERSION=$version ./docker/build.sh "
