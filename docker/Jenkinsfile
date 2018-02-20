@@ -1,7 +1,7 @@
 
 def function(version) {
-    def docker_hub_project = 'dgls/footcourtproxy-'
-    
+    def docker_hub_project = 'dgls/footcourtproxy-`uname -m`'
+    echo docker_hub_project
     deleteDir()  
     echo "Сборщик: ${env.NODE_NAME}"
     sh "hostname"
@@ -20,7 +20,7 @@ def function(version) {
     // docker push
     
     try {
-        sh "docker rmi  \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
+        sh "docker rmi -f  \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
     } catch ( e ) {
      echo  "do not remove"
     }
