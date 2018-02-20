@@ -1,8 +1,8 @@
 
 def function(version) {
-    environment {
-        docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
-
+    
+        def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
+    stage ('init'){
         deleteDir()  
         echo "Сборщик: ${env.NODE_NAME}"
         echo "Директория: ${env.WORKSPACE}"
