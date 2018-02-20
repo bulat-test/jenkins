@@ -9,7 +9,13 @@ def function() {
         echo "Версия Docker"
         sh "docker -v"
         echo ("Собираемый контейнер: "+docker_hub_project +":"+VERSION)
-
+       
+        echo "Удаляем старые docker images"
+        try {
+            sh "docker rmi -f  \$(docker images $docker_hub_project -q) || true"
+        } catch ( e ) {
+         echo  "can not remove some images"
+        }
         checkout scm
     }
     stage ('build-'+host_arch){
@@ -28,11 +34,7 @@ def function() {
         }
         // docker push
 
-        try {
-            sh "docker rmi -f  \$(docker images $docker_hub_project -q)"
-        } catch ( e ) {
-         echo  "can not remove some images"
-        }
+
     }
     
 }
