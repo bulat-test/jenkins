@@ -1,40 +1,7 @@
-//stage ('promotion'){
-//def userInput = input(
-// id: 'userInput', message: 'Enter the version that will be created', parameters: [
-// [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'ver']
-//])
-parallel (
-    "stream 1" : { 
-node('x86_64') {
+node("x86_64 && arm") {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-    sh "whoami"
-    sh "cat /etc/passwd"
-//    echo ("Env: "+userInput)
-//    echo userInput
-//    sh "echo $userInput"
-
-    sh "echo \"docker `uname -m`:latest\""
-    echo "Сборщик: ${env.NODE_NAME}"
-    echo "Директория: ${env.WORKSPACE}"
-    echo "Версия Docker"
-    sh "docker -v"
-
-    checkout scm
-
-    sh "docker build -t 'global_doc:latest' ./docker "
-    sh "docker images"
-    sh "echo 'docker `uname -m`:latest'"
-}
-} 
-                   },
-    
-    "stream 2" : { 
-node('arm') {
-    deleteDir()
-    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-    sh "whoami"
-    sh "cat /etc/passwd"
+    sh "pwd"
 //    echo ("Env: "+userInput)
 //    echo userInput
 //    sh "echo $userInput"
@@ -52,9 +19,3 @@ node('arm') {
     sh "echo 'docker `uname -m`:latest'"
 }
 }
-                   }
-          )
-
-
-
-//}
