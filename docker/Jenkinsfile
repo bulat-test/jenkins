@@ -1,3 +1,4 @@
+stage ('promotion'){
 def function() {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
@@ -21,7 +22,7 @@ def function() {
     }
 }
 
-stage ('promotion'){
+
     def userInput = input(
      id: 'userInput', message: 'Enter the version that will be created', parameters: [
      [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'Version']
