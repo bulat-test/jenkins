@@ -10,7 +10,7 @@ node("x86_64") {
     sh "pwd"
 //    echo ("Env: "+userInput)
 //    echo userInput
-    sh "echo $userInput"
+//    sh "echo $userInput"
 
     sh "echo \"docker `uname -m`:latest\""
     echo "Сборщик: ${env.NODE_NAME}"
