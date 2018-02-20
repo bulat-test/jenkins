@@ -1,5 +1,6 @@
 
 def function(version) {
+    stage ('init'){
     def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
     
     deleteDir()  
@@ -10,8 +11,11 @@ def function(version) {
     echo ("Собираемый контейнер: "+docker_hub_project +":"+version)
  
     checkout scm
-
-    sh "./docker/build.sh "
+    }
+    stage ('build'){
+    sh "./docker/build.sh"
+    }
+    
     sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
     sh "docker images"
     
