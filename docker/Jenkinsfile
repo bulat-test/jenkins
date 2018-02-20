@@ -1,18 +1,17 @@
 
 def function(version) {
-    def docker_hub_project = 'dgls/footcourtproxy-`uname -m`'
-    echo docker_hub_project
+    def docker_hub_project = sh "echo dgls/footcourtproxy-`uname -m`"
     deleteDir()  
     echo "Сборщик: ${env.NODE_NAME}"
     sh "hostname"
     echo "Директория: ${env.WORKSPACE}"
     echo "Версия Docker"
     sh "docker -v"
-
+    
     checkout scm
 
     sh " VERSION=$version ./docker/build.sh "
-    sh "docker tag $docker_hub_project`uname -m`:$version $docker_hub_project`uname -m`:latest"
+    sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
     sh "docker images"
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
         // docker login
@@ -20,7 +19,7 @@ def function(version) {
     // docker push
     
     try {
-        sh "docker rmi -f  \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
+        sh "docker rmi -f  \$(docker images $docker_hub_project -q)"
     } catch ( e ) {
      echo  "do not remove"
     }
