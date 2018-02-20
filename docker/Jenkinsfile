@@ -1,10 +1,12 @@
 
+def docker_hub_project = 'dgls/footcourtproxy-'
+
 def function(version) {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
     sh "whoami"
     sh "hostname"
-    echo ("Env: "+version)
+    echo ("Env: "+docker_hub_project)
     //    echo userInput
     //    sh "echo $userInput"
 
@@ -19,6 +21,7 @@ def function(version) {
     sh " VERSION=$version ./docker/build.sh  "
     sh "docker tag dgls/footcourtproxy-`uname -m`:$version dgls/footcourtproxy-`uname -m`:latest"
     sh "docker images"
+    sh "docker rmi --no-prune $(docker images --filter=reference="dgls/footcourtproxy-*" -q)"
     }
 }
 
