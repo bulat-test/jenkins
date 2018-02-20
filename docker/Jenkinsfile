@@ -1,9 +1,7 @@
 
 def function(version) {
-    def docker_hub_project = sh (
-    script: 'echo dgls/footcourtproxy-`uname -m`',
-    returnStdout: true
-    ).trim()
+    def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
+    
     deleteDir()  
     echo "Сборщик: ${env.NODE_NAME}"
     sh "hostname"
@@ -16,24 +14,26 @@ def function(version) {
     sh " VERSION=$version ./docker/build.sh "
     sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
     sh "docker images"
+    
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
         // docker login
     }
+    
     // docker push
     
     try {
         sh "docker rmi -f  \$(docker images $docker_hub_project -q)"
     } catch ( e ) {
-     echo  "do not remove"
+     echo  "can not remove some images"
     }
     
 }
 
 stage ('promotion'){
-    def userInput = '777' //input(
-    // id: 'userInput', message: 'Enter the version that will be created', parameters: [
-    // [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'Version']
-    //])
+    def userInput = input(
+     id: 'userInput', message: 'Enter the version that will be created', parameters: [
+     [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'Version']
+    ])
     
      parallel (
          "stream x86_64" : {
