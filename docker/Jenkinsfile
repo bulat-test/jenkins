@@ -3,7 +3,7 @@ def userInput = input(
  id: 'userInput', message: 'Enter the version that will be created', parameters: [
  [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'ver']
 ])
-}
+
 node("x86_64") {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
@@ -21,5 +21,6 @@ node("x86_64") {
     sh "docker build -t 'global_doc:latest' ./docker "
     sh "docker images"
     sh "echo 'docker `uname -m`:latest'"
+}
 }
 }
