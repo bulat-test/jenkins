@@ -21,7 +21,7 @@ def function() {
         sh "docker images"
 
 
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '11jenkins_docker_hub_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) { 
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'jenkins_docker_hub_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) { 
         sh "echo $USERNAME"
         sh "echo $PASSWORD"
         //docker login
