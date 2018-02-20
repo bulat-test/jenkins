@@ -1,36 +1,37 @@
 
 def function(version) {
-    stage ('init'){
-    def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
-    
-    deleteDir()  
-    echo "Сборщик: ${env.NODE_NAME}"
-    echo "Директория: ${env.WORKSPACE}"
-    echo "Версия Docker"
-    sh "docker -v"
-    echo ("Собираемый контейнер: "+docker_hub_project +":"+version)
- 
-    checkout scm
+    stages {
+        stage ('init'){
+        def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
+
+        deleteDir()  
+        echo "Сборщик: ${env.NODE_NAME}"
+        echo "Директория: ${env.WORKSPACE}"
+        echo "Версия Docker"
+        sh "docker -v"
+        echo ("Собираемый контейнер: "+docker_hub_project +":"+version)
+
+        checkout scm
+        }
+        stage ('build'){
+        sh "./docker/build.sh"
+        }
+
+        sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
+        sh "docker images"
+
+        withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
+            // docker login
+        }
+
+        // docker push
+
+        try {
+            sh "docker rmi -f  \$(docker images $docker_hub_project -q)"
+        } catch ( e ) {
+         echo  "can not remove some images"
+        }
     }
-    stage ('build'){
-    sh "./docker/build.sh"
-    }
-    
-    sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
-    sh "docker images"
-    
-    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-        // docker login
-    }
-    
-    // docker push
-    
-    try {
-        sh "docker rmi -f  \$(docker images $docker_hub_project -q)"
-    } catch ( e ) {
-     echo  "can not remove some images"
-    }
-    
 }
 
   
