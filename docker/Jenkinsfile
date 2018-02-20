@@ -1,11 +1,11 @@
 
-def docker_hub_project = 'dgls/footcourtproxy-'
-
 def function(version) {
     deleteDir()
+    
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
     sh "whoami"
     sh "hostname"
+    def docker_hub_project = 'dgls/footcourtproxy-'
     echo ("Env: "+docker_hub_project)
     //    echo userInput
     //    sh "echo $userInput"
