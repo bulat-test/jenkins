@@ -3,25 +3,23 @@ def function(version) {
     deleteDir()
     
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-    sh "whoami"
-    sh "hostname"
-    def docker_hub_project = 'dgls/footcourtproxy-'
-    echo ("Env: "+docker_hub_project)
-    //    echo userInput
-    //    sh "echo $userInput"
 
-    sh "echo \"docker `uname -m`:latest\""
+    def docker_hub_project = 'dgls/footcourtproxy-'
+
     echo "Сборщик: ${env.NODE_NAME}"
+    sh "hostname"
     echo "Директория: ${env.WORKSPACE}"
     echo "Версия Docker"
     sh "docker -v"
 
     checkout scm
 
-    sh " VERSION=$version ./docker/build.sh  "
-    sh "docker tag dgls/footcourtproxy-`uname -m`:$version dgls/footcourtproxy-`uname -m`:latest"
+    sh " VERSION=$version ./docker/build.sh "
+    sh "docker tag $docker_hub_project`uname -m`:$version $docker_hub_project`uname -m`:latest"
     sh "docker images"
-    sh "docker rmi --no-prune \$(docker images --filter=reference=\"dgls/footcourtproxy-*\" -q)"
+    // docker login
+    // docker push
+    sh "docker rmi --no-prune \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
     }
 }
 
