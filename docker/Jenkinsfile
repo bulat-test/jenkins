@@ -22,9 +22,8 @@ node('x86_64') {
 
     checkout scm
 
-    sh "docker build -t 'global_doc:latest' ./docker "
+    sh " VERSION=666 ./docker/build.sh  "
     sh "docker images"
-    sh "echo 'docker `uname -m`:latest'"
 }
 } 
                    },
@@ -47,9 +46,8 @@ node('arm') {
 
     checkout scm
 
-    sh "docker build -t 'global_doc:latest' ./docker "
+    sh " VERSION=666 ./docker/build.sh "
     sh "docker images"
-    sh "echo 'docker `uname -m`:latest'"
 }
 }
                    }
