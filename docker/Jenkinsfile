@@ -9,6 +9,7 @@ node('x86_64') {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
     sh "whoami"
+    sh "cat /etc/passwd"
 //    echo ("Env: "+userInput)
 //    echo userInput
 //    sh "echo $userInput"
@@ -33,6 +34,7 @@ node('arm') {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
     sh "whoami"
+    sh "cat /etc/passwd"
 //    echo ("Env: "+userInput)
 //    echo userInput
 //    sh "echo $userInput"
