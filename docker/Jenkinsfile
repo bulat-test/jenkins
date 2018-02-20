@@ -3,9 +3,7 @@
 // id: 'userInput', message: 'Enter the version that will be created', parameters: [
 // [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'ver']
 //])
-parallel (
-    "stream 1" : { 
-node('x86_64') {
+def function() {
     deleteDir()
     withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
     sh "whoami"
@@ -25,29 +23,18 @@ node('x86_64') {
     sh " VERSION=666 ./docker/build.sh  "
     sh "docker images"
 }
+
+parallel (
+    "stream x86_64" : { 
+node('x86_64') {
+    function()
+}
 } 
                    },
     
-    "stream 2" : { 
+    "stream armv7l" : { 
 node('arm') {
-    deleteDir()
-    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-    sh "whoami"
-    sh "hostname"
-//    echo ("Env: "+userInput)
-//    echo userInput
-//    sh "echo $userInput"
-
-    sh "echo \"docker `uname -m`:latest\""
-    echo "Сборщик: ${env.NODE_NAME}"
-    echo "Директория: ${env.WORKSPACE}"
-    echo "Версия Docker"
-    sh "docker -v"
-
-    checkout scm
-
-    sh " VERSION=666 ./docker/build.sh "
-    sh "docker images"
+   function()
 }
 }
                    }
