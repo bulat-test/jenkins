@@ -1,6 +1,9 @@
 
 def function(version) {
-    def docker_hub_project = sh "echo dgls/footcourtproxy-`uname -m`"
+    def docker_hub_project = sh (
+    script: 'echo dgls/footcourtproxy-`uname -m`',
+    returnStdout: true
+    ).trim()
     deleteDir()  
     echo "Сборщик: ${env.NODE_NAME}"
     sh "hostname"
