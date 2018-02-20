@@ -1,32 +1,32 @@
+def function() {
+    deleteDir()
+    withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
+    sh "whoami"
+    sh "hostname"
+    echo ("Env: "+userInput)
+    //    echo userInput
+    //    sh "echo $userInput"
+
+    sh "echo \"docker `uname -m`:latest\""
+    echo "Сборщик: ${env.NODE_NAME}"
+    echo "Директория: ${env.WORKSPACE}"
+    echo "Версия Docker"
+    sh "docker -v"
+
+    checkout scm
+
+    sh " VERSION=$userInput ./docker/build.sh  "
+    sh "docker tag dgls/footcourtproxy-`uname -m`:$userInput dgls/footcourtproxy-`uname -m`:latest"
+    sh "docker images"
+    }
+}
+
 stage ('promotion'){
     def userInput = input(
      id: 'userInput', message: 'Enter the version that will be created', parameters: [
      [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'Version']
     ])
-
-     def function() {
-         deleteDir()
-         withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-         sh "whoami"
-         sh "hostname"
-         echo ("Env: "+userInput)
-     //    echo userInput
-     //    sh "echo $userInput"
-
-         sh "echo \"docker `uname -m`:latest\""
-         echo "Сборщик: ${env.NODE_NAME}"
-         echo "Директория: ${env.WORKSPACE}"
-         echo "Версия Docker"
-         sh "docker -v"
-
-         checkout scm
-
-         sh " VERSION=$userInput ./docker/build.sh  "
-         sh "docker tag dgls/footcourtproxy-`uname -m`:$userInput dgls/footcourtproxy-`uname -m`:latest"
-         sh "docker images"
-         }
-     }
-
+    
      parallel (
          "stream x86_64" : {
              node('x86_64') {
