@@ -1,8 +1,8 @@
-stage ('promotion'){
-def userInput = input(
- id: 'userInput', message: 'Enter the version that will be created', parameters: [
- [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'ver']
-])
+#stage ('promotion'){
+#def userInput = input(
+# id: 'userInput', message: 'Enter the version that will be created', parameters: [
+# [$class: 'TextParameterDefinition', defaultValue: '1.0.0', description: 'Version', name: 'ver']
+#])
 
 node("x86_64") {
     deleteDir()
@@ -25,4 +25,4 @@ node("x86_64") {
     sh "echo 'docker `uname -m`:latest'"
 }
 }
-}
+#}
