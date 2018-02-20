@@ -21,6 +21,8 @@ def function(version) {
     
     try {
         sh "docker rmi  \$(docker images --filter=reference=\"$docker_hub_project*\" -q)"
+    } catch ( e ) {
+    assert e in NumberFormatException
     }
     
 }
