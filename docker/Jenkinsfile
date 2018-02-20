@@ -20,10 +20,12 @@ def function() {
         sh "docker tag $docker_hub_project:$VERSION $docker_hub_project:latest"
         sh "docker images"
 
-        withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
-            // docker login
-        }
 
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'jenkins_docker_hub_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) { 
+        sh "echo $USERNAME"
+        sh "echo $PASSWORD"
+        //docker login
+        }
         // docker push
 
         try {
