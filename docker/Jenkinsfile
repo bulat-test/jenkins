@@ -4,11 +4,11 @@ def function(version) {
     
     deleteDir()  
     echo "Сборщик: ${env.NODE_NAME}"
-    sh "hostname"
     echo "Директория: ${env.WORKSPACE}"
     echo "Версия Docker"
     sh "docker -v"
-    echo docker_hub_project
+    echo ("Собираемый контейнер: "+docker_hub_project +":"+version)
+ 
     checkout scm
 
     sh " VERSION=$version ./docker/build.sh "
