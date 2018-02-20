@@ -1,5 +1,5 @@
 
-def function(version) {
+def function() {
     
         def docker_hub_project = sh (script: 'echo dgls/footcourtproxy-`uname -m`', returnStdout: true).trim()
     stage ('init'){
@@ -8,7 +8,7 @@ def function(version) {
         echo "Директория: ${env.WORKSPACE}"
         echo "Версия Docker"
         sh "docker -v"
-        echo ("Собираемый контейнер: "+docker_hub_project +":"+version)
+        echo ("Собираемый контейнер: "+docker_hub_project +":"+VERSION)
 
         checkout scm
     }
@@ -17,7 +17,7 @@ def function(version) {
     }
     
     stage ('push'){
-        sh "docker tag $docker_hub_project:$version $docker_hub_project:latest"
+        sh "docker tag $docker_hub_project:$VERSION $docker_hub_project:latest"
         sh "docker images"
 
         withCredentials([string(credentialsId: '7c62eff2-ed2e-4ee0-be37-2bbd5b127984', variable: 'TOKEN')]){
@@ -39,13 +39,13 @@ def function(version) {
 parallel (
     "stream x86_64" : {
         node('x86_64') {
-            function(VERSION)
+            function()
         }
     },
 
     "stream armv7l" : { 
         node('arm') {
-            function(VERSION)
+            function()
         }
     }
 )
