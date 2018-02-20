@@ -38,13 +38,13 @@ stage ('promotion'){
      parallel (
          "stream x86_64" : {
              node('x86_64') {
-                 function(userInput)
+                 function(VERSIONN)
              }
          },
 
          "stream armv7l" : { 
              node('arm') {
-                 function(userInput)
+                 function(VERSIONN)
              }
          }
      )
