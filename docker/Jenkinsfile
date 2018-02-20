@@ -21,7 +21,7 @@ def function(version) {
     sh " VERSION=$version ./docker/build.sh  "
     sh "docker tag dgls/footcourtproxy-`uname -m`:$version dgls/footcourtproxy-`uname -m`:latest"
     sh "docker images"
-    sh "docker rmi --no-prune $(docker images --filter=reference="dgls/footcourtproxy-*" -q)"
+    sh "docker rmi --no-prune $(docker images --filter=reference=\"dgls/footcourtproxy-*\" -q)"
     }
 }
 
