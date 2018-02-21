@@ -3,7 +3,7 @@ build_init=false
 build_prod=false
 build_docker=false
 build_all=true
-
+set -e 
 while :
 do
     case "$1" in
@@ -50,7 +50,7 @@ if ${build_docker} || ${build_all}; then
 fi
 
 if ${build_init} || ${build_all}; then
-    docker run -t --rm \
+    docker run -it --rm \
                     -v "$WORKDIR":"/var/www/FootCourtProxy" \
                     -w "/var/www/FootCourtProxy/" \
                     dgls/node-base:1.0.0 \
@@ -59,7 +59,7 @@ if ${build_init} || ${build_all}; then
 fi
 
 if ${build_prod} || ${build_all}; then
-    docker run -t --rm \
+    docker run -it --rm \
                     -v "$WORKDIR":"/var/www/FootCourtProxy" \
                     -w "/var/www/FootCourtProxy/" \
                     dgls/node-base:1.0.0 \
