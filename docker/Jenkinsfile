@@ -19,7 +19,25 @@ def function() {
         checkout scm
     }
     stage ('build-'+host_arch){
-        sh "./docker/build.sh"
+            sh """
+    docker run --rm \
+                    -v `pwd`:/var/www/FootCourtProxy \
+                    -w /var/www/FootCourtProxy/ \
+                    dgls/node-base:1.0.0 \
+                    sh -c \
+                    'npm run init'
+    """
+    
+    sh """
+    docker run --rm \
+                    -v `pwd`:/var/www/FootCourtProxy \
+                    -w /var/www/FootCourtProxy/ \
+                    dgls/node-base:1.0.0 \
+                    sh -c \
+                    'npm run production'
+    """
+
+    sh "(cd docker/final_image; ./export_in_docker_image.sh $VERSION)"
     }
     
     stage ('push-'+host_arch){
